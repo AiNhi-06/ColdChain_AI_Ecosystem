@@ -1,0 +1,72 @@
+services:
+  api-gateway:
+    build:
+      context: .
+      dockerfile: src/ApiGateway/Dockerfile
+    container_name: coldchain-gateway
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
+    depends_on:
+      - identity-service
+      - device-service
+      - temperature-service
+      - alert-service
+      - order-service
+
+  identity-service:
+    build:
+      context: .
+      dockerfile: src/Services/IdentityService/Dockerfile
+    container_name: coldchain-identity
+    ports:
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5001
+
+  device-service:
+    build:
+      context: .
+      dockerfile: src/Services/DeviceService/Dockerfile
+    container_name: coldchain-device
+    ports:
+      - "5002:5002"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5002
+
+  temperature-service:
+    build:
+      context: .
+      dockerfile: src/Services/TemperatureService/Dockerfile
+    container_name: coldchain-temperature
+    ports:
+      - "5003:5003"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5003
+
+  alert-service:
+    build:
+      context: .
+      dockerfile: src/Services/AlertService/Dockerfile
+    container_name: coldchain-alert
+    ports:
+      - "5004:5004"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5004
+
+  order-service:
+    build:
+      context: .
+      dockerfile: src/Services/OrderService/Dockerfile
+    container_name: coldchain-order
+    ports:
+      - "5005:5005"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5005

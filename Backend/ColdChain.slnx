@@ -1,0 +1,22 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ApiGateway/ApiGateway.csproj" />
+  </Folder>
+  <Folder Name="/src/Services/">
+    <Project Path="src/Services/AlertService/AlertService.csproj" />
+    <Project Path="src/Services/DeviceService/DeviceService.csproj" />
+    <Project Path="src/Services/IdentityService/IdentityService.csproj" />
+    <Project Path="src/Services/OrderService/OrderService.csproj" />
+    <Project Path="src/Services/TemperatureService/TemperatureService.csproj" />
+  </Folder>
+  <Folder Name="/src/Shared/">
+    <Project Path="src/Shared/Common/Common.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AlertService.Tests/AlertService.Tests.csproj" />
+    <Project Path="tests/DeviceService.Tests/DeviceService.Tests.csproj" />
+    <Project Path="tests/IdentityService.Tests/IdentityService.Tests.csproj" />
+    <Project Path="tests/OrderService.Tests/OrderService.Tests.csproj" />
+    <Project Path="tests/TemperatureService.Tests/TemperatureService.Tests.csproj" />
+  </Folder>
+</Solution>

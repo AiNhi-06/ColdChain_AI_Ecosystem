@@ -1,0 +1,25 @@
+# IDE
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.sln.docstates
+
+# Build
+Backend/**/bin/
+Backend/**/obj/
+Frontend/node_modules/
+Frontend/dist/
+Frontend/.vite/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env.local
+.env.production
+
+# Logs
+*.log
