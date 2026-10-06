@@ -115,10 +115,10 @@ function HomePage() {
       </main>
 
       <nav className="bottom-nav" aria-label="Điều hướng chính">
-        <a className="nav-item active" href="#home"><Icon name="home" /><span>Trang chủ</span></a>
-        <a className="nav-item" href="#shipments"><Icon name="list" /><span>Lô hàng</span></a>
-        <a className="nav-item" href="#notifications"><Icon name="bell" /><span>Thông báo</span><b>2</b></a>
-        <a className="nav-item" href="#profile"><Icon name="user" /><span>Cá nhân</span></a>
+        <a className="nav-item active" href="#home"><span className="nav-icon"><Icon name="home" /></span><span className="nav-label">Trang chủ</span></a>
+        <a className="nav-item" href="#shipments"><span className="nav-icon"><Icon name="list" /></span><span className="nav-label">Lô hàng</span></a>
+        <a className="nav-item" href="#notifications"><span className="nav-icon"><Icon name="bell" /><b>2</b></span><span className="nav-label">Thông báo</span></a>
+        <a className="nav-item" href="#profile"><span className="nav-icon"><Icon name="user" /></span><span className="nav-label">Cá nhân</span></a>
       </nav>
     </div>
   );
