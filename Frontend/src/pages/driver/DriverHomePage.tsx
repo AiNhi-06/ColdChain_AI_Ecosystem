@@ -71,7 +71,7 @@ function DriverHomePage() {
         <section className="shipment-section driver-section" aria-labelledby="delivery-title">
           <div className="section-heading">
             <div><p className="eyebrow">Lịch trình của bạn</p><h2 id="delivery-title">Chuyến sắp tới</h2></div>
-            <button className="text-button" type="button">Xem lịch <Icon name="chevron" /></button>
+            <Link className="text-button" to="/driver/receive">Nhận hàng <Icon name="chevron" /></Link>
           </div>
           <div className="shipment-list delivery-list">
             {deliveries.map((delivery, index) => (
@@ -98,7 +98,7 @@ function DriverHomePage() {
 
       <nav className="bottom-nav driver-nav" aria-label="Điều hướng chính">
         <Link className="nav-item active" to="/driver"><span className="nav-icon"><Icon name="home" /></span><span className="nav-label">Trang chủ</span></Link>
-        <button className="nav-item" type="button"><span className="nav-icon"><Icon name="calendar" /></span><span className="nav-label">Lịch trình</span></button>
+        <Link className="nav-item" to="/driver/receive"><span className="nav-icon"><Icon name="calendar" /></span><span className="nav-label">Nhận hàng</span></Link>
         <button className="nav-item" type="button"><span className="nav-icon"><Icon name="bell" /></span><span className="nav-label">Thông báo</span></button>
         <button className="nav-item" type="button"><span className="nav-icon"><Icon name="user" /></span><span className="nav-label">Cá nhân</span></button>
       </nav>
