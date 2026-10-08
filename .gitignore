@@ -15,7 +15,7 @@ Frontend/.vite/
 
 # OS
 .DS_Store
-Thumbs.db
+Thumbs.db/plan
 
 # Environment
 .env.local
