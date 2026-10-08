@@ -60,7 +60,7 @@ function ShipmentHistoryPage() {
 					{filteredShipments.length === 0 && <div className="history-empty"><div className="form-icon"><Icon name="search" /></div><h3>Chưa tìm thấy lô hàng phù hợp</h3><p>Thử tìm bằng mã lô khác hoặc bỏ bớt bộ lọc.</p><button type="button" onClick={() => { setQuery(''); setStatus('Tất cả'); }}>Xóa bộ lọc</button></div>}
 				</section>
 			</main>
-			<nav className="bottom-nav" aria-label="Điều hướng chính"><a className="nav-item" href="/sender"><span className="nav-icon"><Icon name="home" /></span><span className="nav-label">Trang chủ</span></a><a className="nav-item active" href="/sender/shipments"><span className="nav-icon"><Icon name="list" /></span><span className="nav-label">Lô hàng</span></a><a className="nav-item" href="#notifications"><span className="nav-icon"><Icon name="bell" /><b>2</b></span><span className="nav-label">Thông báo</span></a><a className="nav-item" href="#profile"><span className="nav-icon"><Icon name="user" /></span><span className="nav-label">Cá nhân</span></a></nav>
+			<nav className="bottom-nav" aria-label="Điều hướng chính"><a className="nav-item" href="/sender"><span className="nav-icon"><Icon name="home" /></span><span className="nav-label">Trang chủ</span></a><a className="nav-item active" href="/sender/shipments"><span className="nav-icon"><Icon name="list" /></span><span className="nav-label">Lô hàng</span></a><a className="nav-item" href="/sender/notifications"><span className="nav-icon"><Icon name="bell" /><b>2</b></span><span className="nav-label">Thông báo</span></a><a className="nav-item" href="/sender/profile"><span className="nav-icon"><Icon name="user" /></span><span className="nav-label">Cá nhân</span></a></nav>
 		</div>
 	);
 }
