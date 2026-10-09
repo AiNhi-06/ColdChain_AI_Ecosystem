@@ -76,7 +76,7 @@ function DriverHomePage() {
           </div>
           <div className="shipment-list delivery-list">
             {deliveries.map((delivery, index) => (
-              <article className="shipment-card delivery-card" key={delivery.id}>
+              <Link className="shipment-card delivery-card" key={delivery.id} to={`/driver/receive?shipment=${delivery.id}`} aria-label={`Mở chuyến ${delivery.id}`}>
                 <div className={`delivery-time ${delivery.tone}`}><strong>{delivery.time}</strong><small>{index === 0 ? 'Hôm nay' : 'Ngày mai'}</small></div>
                 <div className="delivery-line" aria-hidden="true" />
                 <div className="delivery-details">
@@ -84,8 +84,8 @@ function DriverHomePage() {
                   <p className="shipment-id">{delivery.id}</p>
                   <p className="shipment-route"><Icon name="map" /> {delivery.route}</p>
                 </div>
-                <div className="delivery-meta"><strong>{delivery.weight}</strong><button type="button" aria-label={`Mở chi tiết ${delivery.id}`}><Icon name="chevron" /></button></div>
-              </article>
+                <div className="delivery-meta"><strong>{delivery.weight}</strong><span aria-hidden="true"><Icon name="chevron" /></span></div>
+              </Link>
             ))}
           </div>
         </section>

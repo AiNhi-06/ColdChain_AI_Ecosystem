@@ -54,6 +54,7 @@ function DriverColdChainPage() {
   const [isLive, setIsLive] = useState(true);
   const [isAlertResolved, setIsAlertResolved] = useState(false);
   const [showGuidance, setShowGuidance] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
 
   return (
     <div className="app-shell driver-shell cold-chain-shell">
@@ -102,7 +103,7 @@ function DriverColdChainPage() {
           </div>
         </section>
 
-        <section className="cold-readings" aria-labelledby="readings-title"><div className="cold-panel-heading"><div><p className="eyebrow">Dữ liệu cảm biến</p><h2 id="readings-title">Lần ghi nhận gần nhất</h2></div><button className="text-button" type="button">Xem lịch sử <Icon name="chevron" /></button></div><div className="readings-table" role="table"><div role="row" className="reading-row reading-header"><span role="columnheader">Thời gian</span><span role="columnheader">Nhiệt độ</span><span role="columnheader">Độ ẩm</span><span role="columnheader">Trạng thái</span></div>{temperaturePoints.slice(-4).reverse().map((point) => <div role="row" className="reading-row" key={point.time}><span role="cell">08/10 · {point.time}</span><strong role="cell">{point.value.toFixed(1)}°C</strong><span role="cell">71%</span><span role="cell" className="reading-ok"><i /> Bình thường</span></div>)}</div></section>
+        <section className="cold-readings" aria-labelledby="readings-title">        <div className="cold-panel-heading"><div><p className="eyebrow">Dữ liệu cảm biến</p><h2 id="readings-title">Lần ghi nhận gần nhất</h2></div><button className="text-button" type="button" onClick={() => setShowHistory((value) => !value)} aria-expanded={showHistory}> {showHistory ? 'Ẩn lịch sử' : 'Xem lịch sử'} <Icon name="chevron" /></button></div><div className="readings-table" role="table"><div role="row" className="reading-row reading-header"><span role="columnheader">Thời gian</span><span role="columnheader">Nhiệt độ</span><span role="columnheader">Độ ẩm</span><span role="columnheader">Trạng thái</span></div>{temperaturePoints.slice(showHistory ? 0 : -4).reverse().map((point) => <div role="row" className="reading-row" key={point.time}><span role="cell">08/10 · {point.time}</span><strong role="cell">{point.value.toFixed(1)}°C</strong><span role="cell">71%</span><span role="cell" className="reading-ok"><i /> Bình thường</span></div>)}</div></section>
       </main>
 
       <nav className="bottom-nav driver-nav" aria-label="Điều hướng chính"><Link className="nav-item" to="/driver"><span className="nav-icon"><Icon name="home" /></span><span className="nav-label">Trang chủ</span></Link><Link className="nav-item" to="/driver/receive"><span className="nav-icon"><Icon name="calendar" /></span><span className="nav-label">Nhận hàng</span></Link><Link className="nav-item active" to="/driver/cold-chain" aria-current="page"><span className="nav-icon"><Icon name="thermometer" /></span><span className="nav-label">Chuỗi lạnh</span></Link><Link className="nav-item" to="/driver/profile"><span className="nav-icon"><Icon name="user" /></span><span className="nav-label">Cá nhân</span></Link></nav>

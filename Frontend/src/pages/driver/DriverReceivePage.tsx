@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 type IconName = 'arrow' | 'bell' | 'box' | 'calendar' | 'check' | 'chevron' | 'clock' | 'home' | 'map' | 'qr' | 'thermometer' | 'user';
 
@@ -34,7 +34,10 @@ const checklistItems = [
 ];
 
 function DriverReceivePage() {
-  const [selectedId, setSelectedId] = useState(shipments[0].id);
+  const [searchParams] = useSearchParams();
+  const requestedShipment = searchParams.get('shipment');
+  const initialShipment = shipments.some((item) => item.id === requestedShipment) ? requestedShipment! : shipments[0].id;
+  const [selectedId, setSelectedId] = useState(initialShipment);
   const [checkedItems, setCheckedItems] = useState<boolean[]>([false, false, false]);
   const [isScanning, setIsScanning] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
