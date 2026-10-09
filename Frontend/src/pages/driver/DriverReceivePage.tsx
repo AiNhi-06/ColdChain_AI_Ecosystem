@@ -120,7 +120,7 @@ function DriverReceivePage() {
         <Link className="nav-item" to="/driver"><span className="nav-icon"><Icon name="home" /></span><span className="nav-label">Trang chủ</span></Link>
         <Link className="nav-item active" to="/driver/receive" aria-current="page"><span className="nav-icon"><Icon name="calendar" /></span><span className="nav-label">Nhận hàng</span></Link>
         <Link className="nav-item" to="/driver/cold-chain"><span className="nav-icon"><Icon name="thermometer" /></span><span className="nav-label">Chuỗi lạnh</span></Link>
-        <button className="nav-item" type="button"><span className="nav-icon"><Icon name="user" /></span><span className="nav-label">Cá nhân</span></button>
+        <Link className="nav-item" to="/driver/profile"><span className="nav-icon"><Icon name="user" /></span><span className="nav-label">Cá nhân</span></Link>
       </nav>
     </div>
   );
