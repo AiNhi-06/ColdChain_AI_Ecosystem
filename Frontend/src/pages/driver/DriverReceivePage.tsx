@@ -111,7 +111,7 @@ function DriverReceivePage() {
               </div>
             </div>
 
-            {isConfirmed ? <div className="receive-success" role="status"><span><Icon name="check" /></span><div><strong>Đã xác nhận nhận hàng</strong><p>Lô {shipment.id} đã được ghi nhận lúc 08:24.</p></div></div> : <button className="receive-confirm" type="button" disabled={!canConfirm} onClick={() => setIsConfirmed(true)}><span>{canConfirm ? 'Xác nhận đã nhận hàng' : 'Hoàn tất 3 bước kiểm tra'}</span><Icon name="arrow" /></button>}
+            {isConfirmed ? <div className="receive-success" role="status"><span><Icon name="check" /></span><div><strong>Đã xác nhận nhận hàng</strong><p>Lô {shipment.id} đã được ghi nhận lúc 08:24.</p><Link className="handover-next-link" to="/driver/handover">Tiếp tục đến bàn giao <Icon name="arrow" /></Link></div></div> : <button className="receive-confirm" type="button" disabled={!canConfirm} onClick={() => setIsConfirmed(true)}><span>{canConfirm ? 'Xác nhận đã nhận hàng' : 'Hoàn tất 3 bước kiểm tra'}</span><Icon name="arrow" /></button>}
           </div>
         </section>
       </main>

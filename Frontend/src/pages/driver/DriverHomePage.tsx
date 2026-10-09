@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-type IconName = 'bell' | 'box' | 'calendar' | 'check' | 'chevron' | 'clock' | 'home' | 'map' | 'navigation' | 'user' | 'warning';
+type IconName = 'bell' | 'box' | 'calendar' | 'check' | 'chevron' | 'clock' | 'home' | 'map' | 'navigation' | 'thermometer' | 'user' | 'warning';
 
 function Icon({ name }: { name: IconName }) {
   const paths: Record<IconName, React.ReactNode> = {
@@ -14,6 +14,7 @@ function Icon({ name }: { name: IconName }) {
     home: <><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z" /><path d="M9 21v-6h6v6" /></>,
     map: <><path d="m9 18-6 3V6l6-3 6 3 6-3v15l-6 3-6-3Z" /><path d="M9 3v15M15 6v15" /></>,
     navigation: <><path d="m12 19 7-16-16 7 7 2 2 7Z" /></>,
+    thermometer: <><path d="M14 14.76V5a2 2 0 0 0-4 0v9.76a4 4 0 1 0 4 0Z" /><path d="M12 11v5" /></>,
     user: <><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></>,
     warning: <><path d="m10.3 3.8-8 14A2 2 0 0 0 4 20.8h16a2 2 0 0 0 1.7-3l-8-14a2 2 0 0 0-3.4 0Z" /><path d="M12 9v4M12 17h.01" /></>,
   };
@@ -97,9 +98,9 @@ function DriverHomePage() {
       </main>
 
       <nav className="bottom-nav driver-nav" aria-label="Điều hướng chính">
-        <Link className="nav-item active" to="/driver"><span className="nav-icon"><Icon name="home" /></span><span className="nav-label">Trang chủ</span></Link>
+        <Link className="nav-item active" to="/driver" aria-current="page"><span className="nav-icon"><Icon name="home" /></span><span className="nav-label">Trang chủ</span></Link>
         <Link className="nav-item" to="/driver/receive"><span className="nav-icon"><Icon name="calendar" /></span><span className="nav-label">Nhận hàng</span></Link>
-        <button className="nav-item" type="button"><span className="nav-icon"><Icon name="bell" /></span><span className="nav-label">Thông báo</span></button>
+        <Link className="nav-item" to="/driver/cold-chain"><span className="nav-icon"><Icon name="thermometer" /></span><span className="nav-label">Chuỗi lạnh</span></Link>
         <button className="nav-item" type="button"><span className="nav-icon"><Icon name="user" /></span><span className="nav-label">Cá nhân</span></button>
       </nav>
     </div>

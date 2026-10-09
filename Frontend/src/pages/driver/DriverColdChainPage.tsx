@@ -53,6 +53,7 @@ function TemperatureChart() {
 function DriverColdChainPage() {
   const [isLive, setIsLive] = useState(true);
   const [isAlertResolved, setIsAlertResolved] = useState(false);
+  const [showGuidance, setShowGuidance] = useState(false);
 
   return (
     <div className="app-shell driver-shell cold-chain-shell">
@@ -75,6 +76,12 @@ function DriverColdChainPage() {
           <div className="cold-stat"><span>Cảm biến</span><strong className="sensor-online"><i /> Online</strong><small>Phản hồi 12 giây trước</small></div>
         </section>
 
+        <section className="ai-alert-summary" aria-label="Tổng quan cảnh báo AI">
+          <div className="ai-alert-summary-heading"><span className="ai-pulse" aria-hidden="true" /><div><p className="eyebrow">AI giám sát</p><h2>Không có bất thường nghiêm trọng</h2></div><span className="ai-last-update">Phân tích lúc 09:32</span></div>
+          <div className="ai-alert-levels"><span className="ai-level ai-level-critical"><b>0</b> Khẩn cấp</span><span className="ai-level ai-level-watch"><b>{isAlertResolved ? 0 : 1}</b> Theo dõi</span><span className="ai-level ai-level-clear"><b>12</b> Đã xử lý hôm nay</span></div>
+          <p className="ai-alert-summary-note">AI phát hiện và ưu tiên cảnh báo dựa trên nhiệt độ, cảm biến cửa và lịch trình tuyến.</p>
+        </section>
+
         <section className="cold-chain-grid">
           <div className="cold-panel chart-panel">
             <div className="cold-panel-heading"><div><p className="eyebrow">Lịch sử nhiệt độ</p><h2>Ổn định trong 2 giờ 30 phút</h2></div><button className="live-toggle" type="button" onClick={() => setIsLive((value) => !value)} aria-pressed={isLive}><Icon name={isLive ? 'pause' : 'play'} /> {isLive ? 'Tạm dừng' : 'Tiếp tục'}</button></div>
@@ -90,8 +97,8 @@ function DriverColdChainPage() {
 
           <div className={`cold-panel cold-alert ${isAlertResolved ? 'resolved' : ''}`}>
             <div className="alert-badge"><Icon name={isAlertResolved ? 'check' : 'warning'} /></div>
-            <div className="alert-copy"><p className="eyebrow">{isAlertResolved ? 'Đã xử lý' : 'Cảnh báo cần kiểm tra'}</p><h2>{isAlertResolved ? 'Điều kiện bảo quản an toàn' : 'Cửa thùng xe vừa mở'}</h2><p>{isAlertResolved ? 'Hệ thống đã ghi nhận thao tác kiểm tra của bạn.' : 'Nhiệt độ tăng 0.3°C trong 2 phút qua. Hãy kiểm tra cửa thùng xe đã đóng kín.'}</p><span className="alert-meta"><strong>Mức độ: {isAlertResolved ? 'Đã xử lý' : 'Theo dõi'}</strong> · 09:30</span></div>
-            {!isAlertResolved && <button className="alert-action" type="button" onClick={() => setIsAlertResolved(true)}>Đã kiểm tra <Icon name="arrow" /></button>}
+            <div className="alert-copy"><div className="alert-title-row"><p className="eyebrow">{isAlertResolved ? 'Đã xử lý' : 'Cảnh báo cần kiểm tra'}</p><span className={`alert-severity ${isAlertResolved ? 'resolved' : ''}`}><i />{isAlertResolved ? 'Đã xử lý' : 'Theo dõi'}</span></div><h2>{isAlertResolved ? 'Điều kiện bảo quản an toàn' : 'Cửa thùng xe vừa mở'}</h2><p>{isAlertResolved ? 'Hệ thống đã ghi nhận thao tác kiểm tra của bạn.' : 'Nhiệt độ tăng 0.3°C trong 2 phút qua. Hãy kiểm tra cửa thùng xe đã đóng kín.'}</p><span className="alert-meta"><strong>{isAlertResolved ? 'Đã đóng cảnh báo' : 'AI đề xuất: kiểm tra cửa thùng'}</strong> · 09:30</span>{showGuidance && !isAlertResolved && <div className="alert-guidance" role="note"><strong>Hướng dẫn nhanh</strong><span>1. Dừng xe an toàn · 2. Kiểm tra gioăng cửa · 3. Đóng cửa và theo dõi thêm 5 phút.</span></div>}</div>
+            {!isAlertResolved && <div className="alert-actions"><button className="alert-secondary-action" type="button" onClick={() => setShowGuidance((value) => !value)} aria-expanded={showGuidance}>{showGuidance ? 'Ẩn hướng dẫn' : 'Xem hướng dẫn'}</button><button className="alert-action" type="button" onClick={() => setIsAlertResolved(true)}>Đã kiểm tra <Icon name="arrow" /></button></div>}
           </div>
         </section>
 

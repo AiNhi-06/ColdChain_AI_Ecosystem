@@ -4,6 +4,7 @@ import SenderHomePage from './pages/sender/SenderHomePage';
 import DriverHomePage from './pages/driver/DriverHomePage';
 import DriverReceivePage from './pages/driver/DriverReceivePage';
 import DriverColdChainPage from './pages/driver/DriverColdChainPage';
+import DriverHandoverPage from './pages/driver/DriverHandoverPage';
 import EnterpriseHomePage from './pages/enterprise/EnterpriseHomePage';
 import CreateShipmentPage from './pages/sender/CreateShipmentPage';
 import ShipmentDetailPage from './pages/sender/ShipmentDetailPage';
@@ -31,6 +32,7 @@ function App() {
         <Route path="/driver" element={<DriverHomePage />} />
         <Route path="/driver/receive" element={<DriverReceivePage />} />
         <Route path="/driver/cold-chain" element={<DriverColdChainPage />} />
+        <Route path="/driver/handover" element={<DriverHandoverPage />} />
         <Route path="/enterprise" element={<EnterpriseHomePage />} />
       </Routes>
     </BrowserRouter>

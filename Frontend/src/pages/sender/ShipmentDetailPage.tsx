@@ -44,7 +44,7 @@ function ShipmentDetailPage() {
 						<div className="temperature-chip"><span>Nhiệt độ bảo quản</span><strong>4–8°C</strong></div>
 					</div>
 				</section>
-				<section className="next-step-card"><div><p className="eyebrow">Bước tiếp theo</p><h2>Chia sẻ mã QR khi bàn giao</h2><p>Tài xế quét mã để đối chiếu nhanh thông tin lô hàng.</p></div><Link className="primary-action" to={`/sender/shipments/${shipmentId}/qr`}>Mở mã QR <Icon name="arrow-right" /></Link></section>
+				<section className="next-step-card"><div><p className="eyebrow">Bước tiếp theo</p><h2>Hoàn tất bàn giao lô hàng</h2><p>Tài xế quét mã để đối chiếu nhanh thông tin, sau đó xác nhận người nhận và phương tiện.</p></div><div className="next-step-actions"><Link className="secondary-action" to={`/sender/shipments/${shipmentId}/qr`}>Mở mã QR</Link><Link className="primary-action" to={`/sender/shipments/${shipmentId}/handover`}>Xác nhận bàn giao <Icon name="arrow-right" /></Link></div></section>
 			</main>
 		</div>
 	);
