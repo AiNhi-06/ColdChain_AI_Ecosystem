@@ -1,11 +1,18 @@
 import { FormEvent, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { rolePaths, UserRole } from '../types/roles';
 
 type AuthMode = 'login' | 'register';
 type AuthMethod = 'password' | 'otp';
 
 type AuthPageProps = {
   initialMode?: AuthMode;
+};
+
+const demoAccountRoles: Record<string, UserRole> = {
+  '0901234567': 'sender',
+  '0902345678': 'driver',
+  '0903456789': 'enterprise',
 };
 
 function Mark() {
@@ -68,7 +75,10 @@ function AuthPage({ initialMode = 'login' }: AuthPageProps) {
     window.setTimeout(() => {
       setSubmitted(false);
       setNotice(mode === 'login' ? 'Đăng nhập thành công. Đang mở trang chủ...' : 'Tài khoản đã được tạo thành công.');
-      if (mode === 'login') navigate('/sender');
+      if (mode === 'login') {
+        const accountRole = demoAccountRoles[phoneValue.replace(/\s/g, '')] || 'sender';
+        navigate(rolePaths[accountRole]);
+      }
     }, 650);
   };
 
