@@ -1137,7 +1137,142 @@ TRẠNG THÁI XỬ LÝ
 
 ---
 
-# 18. Design System đề xuất
+# 18. Đồng bộ thiết kế giữa Sender, Driver và Enterprise
+
+Enterprise không được tạo một design system độc lập. Đây là cùng một sản phẩm
+ColdChain AI, vì vậy ba vai trò phải dùng chung visual language, token và các
+pattern tương tác cốt lõi.
+
+## 18.1. Những thành phần bắt buộc dùng chung
+
+Các màn hình Enterprise cần tái sử dụng hoặc mở rộng các pattern đang có trong
+Sender và Driver:
+
+```text
+app-shell
+topbar
+brand-lockup
+brand-mark
+eyebrow
+welcome-row
+profile-chip
+stats-grid
+stat-card
+shipment-card
+status badge
+icon-button
+text-button
+bottom-nav / role navigation
+```
+
+Không tạo một biến thể mới nếu pattern hiện tại có thể đáp ứng. Nếu Enterprise
+cần thêm sidebar desktop, sidebar chỉ thay đổi cách điều hướng; không thay đổi
+logo, màu thương hiệu, kiểu chữ, icon style, trạng thái hoặc cách phản hồi
+tương tác.
+
+## 18.2. Visual language chung
+
+| Thành phần | Sender/Driver hiện tại | Quy tắc cho Enterprise |
+|---|---|---|
+| Font | DM Sans; Space Mono cho mã và số liệu | Giữ nguyên, không dùng Inter riêng cho Enterprise |
+| Primary | Navy `#102f42` | Dùng cho header, CTA chính và tiêu đề |
+| Success | Green `#2f8f62` | Dùng cho an toàn, hoàn tất, online |
+| Info | Blue `#3478b9` | Dùng cho đang vận chuyển và dữ liệu live |
+| Warning | Amber `#d89039` | Dùng cho theo dõi và nguy cơ |
+| Surface | Nền `#f4f7f6`, card trắng | Giữ cùng nền/card/border, chỉ tăng density trên desktop |
+| Border | `#dce6e5` | Không thay bằng border đậm hoặc shadow nặng |
+| Icon | SVG line icon, stroke khoảng `1.8` | Giữ cùng family, không dùng emoji hoặc icon 3D |
+| Radius | Bo góc mềm, nhất quán | Không dùng card vuông sắc hoặc glassmorphism |
+| Motion | Hover/transition ngắn, không gây layout shift | Dùng cho table, filter, drawer; tôn trọng reduced motion |
+
+## 18.3. Pattern trạng thái dùng chung
+
+Status badge phải giữ cách gọi hiện tại:
+
+```text
+pending     → Chờ vận chuyển
+in_transit  → Đang vận chuyển
+delivered   → Đã bàn giao
+```
+
+Enterprise được bổ sung trạng thái vận hành nhưng vẫn theo cùng cấu trúc badge:
+
+```text
+at_risk     → Có nguy cơ
+critical    → Khẩn cấp
+online      → Đang hoạt động
+offline     → Mất kết nối
+stale       → Dữ liệu bị trễ
+resolved    → Đã xử lý
+```
+
+Mỗi trạng thái phải có:
+
+- Nhãn văn bản.
+- Màu semantic.
+- Chấm/icon hoặc ký hiệu bổ trợ.
+- Trạng thái accessible tương ứng.
+
+Không dùng màu đơn độc để phân biệt an toàn, cảnh báo hoặc lỗi.
+
+## 18.4. Khác biệt theo vai trò
+
+Sự khác nhau giữa ba vai trò nằm ở nhiệm vụ và mật độ thông tin, không nằm ở
+nhận diện thương hiệu:
+
+```text
+Sender
+  Mobile-first
+  Bottom navigation
+  CTA tạo lô hàng nổi bật
+  Shipment card đơn giản, dễ quét
+
+Driver
+  Mobile-first
+  Bottom navigation
+  Trạng thái online/offline
+  Telemetry và thao tác theo chuyến
+
+Enterprise
+  Desktop-first, responsive xuống tablet
+  Sidebar hoặc navigation mở rộng
+  KPI, table, map và filter mật độ cao
+  Drawer/timeline để xem chi tiết mà không mất ngữ cảnh
+```
+
+Enterprise vẫn phải giữ lại topbar, brand lockup, profile language, card
+hierarchy và cách đặt tiêu đề giống Sender/Driver. Không dùng một layout admin
+generic khiến người dùng cảm thấy đã chuyển sang sản phẩm khác.
+
+## 18.5. Nguyên tắc responsive
+
+- Dưới `768px`: Enterprise chuyển sidebar thành drawer hoặc navigation ngang
+  có thể cuộn; bảng chuyển thành card hoặc cho phép cuộn ngang có chủ đích.
+- Từ `1024px`: dùng sidebar cố định và lưới 2–4 cột cho KPI.
+- Từ `1440px`: giới hạn chiều rộng nội dung, không kéo card và text quá rộng.
+- Các màn hình Sender/Driver vẫn giữ bottom navigation; Enterprise không bắt
+  buộc dùng bottom navigation nếu sidebar rõ ràng hơn trên desktop.
+- Không thay đổi token màu, typography và icon chỉ vì breakpoint.
+
+## 18.6. Quy tắc khi tạo component Enterprise mới
+
+Trước khi tạo component mới, kiểm tra theo thứ tự:
+
+```text
+1. Có thể tái sử dụng component Sender/Driver không?
+2. Có thể mở rộng class/token hiện tại không?
+3. Pattern mới có cùng semantic colors, radius, spacing và focus state không?
+4. Có trạng thái loading, empty, error và disabled không?
+5. Có keyboard/focus/accessibility label tương ứng không?
+```
+
+Chỉ tạo component Enterprise riêng khi nghiệp vụ thực sự mới, ví dụ:
+`KpiCard`, `DataTable`, `MapPanel`, `TemperatureChart`, `AlertDetailDrawer`.
+Các component này vẫn phải dùng token và primitive chung.
+
+---
+
+# 19. Design System đề xuất
 
 **[ĐỀ XUẤT FE — cần chốt bằng UI design trước khi code]**
 
@@ -1189,7 +1324,7 @@ Dùng spacing scale thay vì tự nhập từng giá trị.
 
 ---
 
-# 19. Component Dependency
+# 20. Component Dependency
 
 Luồng component chính:
 
@@ -1234,7 +1369,7 @@ HandoverScreen
 
 ---
 
-# 20. Ưu tiên màn hình khi thiết kế UI
+# 21. Ưu tiên màn hình khi thiết kế UI
 
 ## Priority P0 — Bắt buộc cho MVP
 
@@ -1269,7 +1404,7 @@ HandoverScreen
 
 ---
 
-# 21. Thứ tự thiết kế Figma
+# 22. Thứ tự thiết kế Figma
 
 Để tránh thiết kế rời rạc, nên đi theo thứ tự:
 
@@ -1305,7 +1440,7 @@ Enterprise
 
 ---
 
-# 22. Prototype Flow cần test
+# 23. Prototype Flow cần test
 
 Prototype tối thiểu:
 
@@ -1368,7 +1503,7 @@ Home
 
 ---
 
-# 23. Những điểm cần chốt trước khi code
+# 24. Những điểm cần chốt trước khi code
 
 Tài liệu nguồn chưa quy định chi tiết các vấn đề sau. Không nên tự coi đây là requirement đã được xác nhận.
 
@@ -1393,7 +1528,7 @@ Tài liệu nguồn chưa quy định chi tiết các vấn đề sau. Không n�
 
 ---
 
-# 24. Kết luận — FE Roadmap
+# 25. Kết luận — FE Roadmap
 
 Kiến trúc FE nên được triển khai theo hướng:
 
