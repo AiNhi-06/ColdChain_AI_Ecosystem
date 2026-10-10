@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 type IconName = 'bell' | 'box' | 'chart' | 'map' | 'thermometer' | 'warning' | 'arrow';
@@ -23,6 +24,8 @@ const shipments = [
 ];
 
 function EnterpriseDashboardPage() {
+  const [period, setPeriod] = useState('30 ngày qua');
+
   return (
     <div className="enterprise-shell">
       <aside className="enterprise-sidebar">
@@ -45,13 +48,13 @@ function EnterpriseDashboardPage() {
       <div className="enterprise-content">
         <header className="enterprise-topbar">
           <div><p className="eyebrow">Không gian doanh nghiệp</p><strong>Trung tâm vận hành</strong></div>
-          <div className="enterprise-topbar-actions"><span className="enterprise-freshness"><i /> Dữ liệu cập nhật 12 giây trước</span><button className="icon-button" type="button" aria-label="Xem thông báo"><Icon name="bell" /><span className="notification-dot" aria-hidden="true" /></button></div>
+          <div className="enterprise-topbar-actions"><span className="enterprise-freshness"><i /> Dữ liệu cập nhật 12 giây trước</span><Link className="icon-button" to="/enterprise/alerts" aria-label="Xem thông báo"><Icon name="bell" /><span className="notification-dot" aria-hidden="true" /></Link></div>
         </header>
 
         <main className="enterprise-main">
           <section className="enterprise-heading">
             <div><p className="eyebrow">Thứ Ba, 06 tháng 10, 2026</p><h1>Toàn cảnh <span>vận hành.</span></h1><p className="welcome-copy">Theo dõi chất lượng và tiến độ các lô hàng của doanh nghiệp.</p></div>
-            <button className="enterprise-filter" type="button">30 ngày qua <span aria-hidden="true">Chọn</span></button>
+            <label className="enterprise-filter-select"><span className="sr-only">Khoảng thời gian dashboard</span><select value={period} onChange={(event) => setPeriod(event.target.value)}><option>7 ngày qua</option><option>30 ngày qua</option><option>90 ngày qua</option></select></label>
           </section>
 
           <section className="enterprise-kpi-grid" aria-label="Tổng quan vận hành">

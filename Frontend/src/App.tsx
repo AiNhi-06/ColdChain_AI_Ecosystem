@@ -7,7 +7,7 @@ import DriverColdChainPage from './pages/driver/DriverColdChainPage';
 import DriverHandoverPage from './pages/driver/DriverHandoverPage';
 import DriverProfilePage from './pages/driver/DriverProfilePage';
 import EnterpriseDashboardPage from './pages/enterprise/EnterpriseDashboardPage';
-import EnterpriseSectionPage from './pages/enterprise/EnterpriseSectionPage';
+import EnterpriseSectionPage, { ShipmentDetailPage as EnterpriseShipmentDetailPage } from './pages/enterprise/EnterpriseSectionPage';
 import CreateShipmentPage from './pages/sender/CreateShipmentPage';
 import ShipmentDetailPage from './pages/sender/ShipmentDetailPage';
 import ShipmentQrPage from './pages/sender/ShipmentQrPage';
@@ -38,6 +38,7 @@ function App() {
         <Route path="/driver/profile" element={<DriverProfilePage />} />
         <Route path="/enterprise" element={<EnterpriseDashboardPage />} />
         <Route path="/enterprise/shipments" element={<EnterpriseSectionPage />} />
+        <Route path="/enterprise/shipments/:shipmentId" element={<EnterpriseShipmentDetailPage />} />
         <Route path="/enterprise/cold-chain" element={<EnterpriseSectionPage />} />
         <Route path="/enterprise/alerts" element={<EnterpriseSectionPage />} />
         <Route path="/enterprise/tracking" element={<EnterpriseSectionPage />} />
