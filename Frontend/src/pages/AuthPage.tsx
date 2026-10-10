@@ -9,6 +9,12 @@ type AuthPageProps = {
   initialMode?: AuthMode;
 };
 
+const demoAccounts: Array<{ role: UserRole; name: string; phone: string; password: string }> = [
+  { role: 'sender', name: 'Người gửi hàng', phone: '0901234567', password: 'Sender@123' },
+  { role: 'driver', name: 'Người vận chuyển', phone: '0902345678', password: 'Driver@123' },
+  { role: 'enterprise', name: 'Doanh nghiệp', phone: '0903456789', password: 'Enterprise@123' },
+];
+
 function Mark() {
   return (
     <span className="auth-mark" aria-hidden="true">
@@ -37,6 +43,8 @@ function AuthPage({ initialMode = 'login' }: AuthPageProps) {
   const [method, setMethod] = useState<AuthMethod>('password');
   const [selectedRole, setSelectedRole] = useState<UserRole>('sender');
   const [showPassword, setShowPassword] = useState(false);
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [notice, setNotice] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -52,14 +60,14 @@ function AuthPage({ initialMode = 'login' }: AuthPageProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const phone = String(form.get('phone') || '').trim();
-    const password = String(form.get('password') || '').trim();
+    const phoneValue = String(form.get('phone') || '').trim();
+    const passwordValue = String(form.get('password') || '').trim();
     const otp = String(form.get('otp') || '').trim();
     const nextErrors: Record<string, string> = {};
 
-    if (!/^0\d{9}$/.test(phone.replace(/\s/g, ''))) nextErrors.phone = 'Nhập số điện thoại gồm 10 chữ số.';
+    if (!/^0\d{9}$/.test(phoneValue.replace(/\s/g, ''))) nextErrors.phone = 'Nhập số điện thoại gồm 10 chữ số.';
     if (mode === 'register' && !String(form.get('fullName') || '').trim()) nextErrors.fullName = 'Nhập họ và tên của bạn.';
-    if (method === 'password' && password.length < 6) nextErrors.password = 'Mật khẩu cần ít nhất 6 ký tự.';
+    if (method === 'password' && passwordValue.length < 6) nextErrors.password = 'Mật khẩu cần ít nhất 6 ký tự.';
     if (method === 'otp' && !/^\d{6}$/.test(otp)) nextErrors.otp = 'Mã OTP gồm 6 chữ số.';
 
     setErrors(nextErrors);
@@ -72,6 +80,14 @@ function AuthPage({ initialMode = 'login' }: AuthPageProps) {
       setNotice(mode === 'login' ? 'Đăng nhập thành công. Đang mở trang chủ...' : 'Tài khoản đã được tạo thành công.');
       if (mode === 'login') navigate(rolePaths[selectedRole]);
     }, 650);
+  };
+
+  const useDemoAccount = (account: (typeof demoAccounts)[number]) => {
+    setSelectedRole(account.role);
+    setPhone(account.phone);
+    setPassword(account.password);
+    setNotice(`Đã điền tài khoản mẫu ${account.name}.`);
+    setErrors({});
   };
 
   const isRegister = mode === 'register';
@@ -102,15 +118,57 @@ function AuthPage({ initialMode = 'login' }: AuthPageProps) {
             <button className={isRegister ? 'selected' : ''} type="button" role="tab" aria-selected={isRegister} onClick={() => switchMode('register')}>Đăng ký</button>
           </div>
 
+          {!isRegister && <section className="demo-accounts" aria-labelledby="demo-accounts-title">
+            <div className="demo-accounts-heading">
+              <span id="demo-accounts-title">Tài khoản mẫu</span>
+              <small>Bấm để điền nhanh thông tin đăng nhập</small>
+            </div>
+            <div className="demo-account-list">
+              {demoAccounts.map((account) => (
+                <button
+                  className={`demo-account ${selectedRole === account.role ? 'selected' : ''}`}
+                  type="button"
+                  key={account.role}
+                  onClick={() => useDemoAccount(account)}
+                >
+                  <strong>{account.name}</strong>
+                  <span>{account.phone}</span>
+                  <small>Mật khẩu: {account.password}</small>
+                </button>
+              ))}
+            </div>
+          </section>}
+
           <form className="auth-form" onSubmit={handleSubmit} noValidate>
             {isRegister && <div className="field-group"><label htmlFor="fullName">Họ và tên <span>*</span></label><input id="fullName" name="fullName" type="text" autoComplete="name" placeholder="Ví dụ: Nguyễn Văn Minh" aria-invalid={Boolean(errors.fullName)} />{errors.fullName && <small className="field-error">{errors.fullName}</small>}</div>}
             {isRegister && <div className="field-group"><label htmlFor="senderType">Bạn là <span>*</span></label><select id="senderType" name="senderType" defaultValue="owner"><option value="owner">Chủ vựa</option><option value="collector">Điểm thu gom</option><option value="trader">Thương lái</option></select></div>}
             {!isRegister && <div className="field-group"><label htmlFor="role">Vai trò đăng nhập <span>*</span></label><select id="role" name="role" value={selectedRole} onChange={(event) => setSelectedRole(event.target.value as UserRole)}><option value="sender">{roleLabels.sender}</option><option value="driver">{roleLabels.driver}</option><option value="enterprise">{roleLabels.enterprise}</option></select></div>}
-            <div className="field-group"><label htmlFor="phone">Số điện thoại <span>*</span></label><input id="phone" name="phone" type="tel" inputMode="numeric" autoComplete="tel" placeholder="090 123 4567" aria-invalid={Boolean(errors.phone)} />{errors.phone && <small className="field-error">{errors.phone}</small>}</div>
+            <div className="field-group"><label htmlFor="phone">Số điện thoại <span>*</span></label><input id="phone" name="phone" type="tel" inputMode="numeric" autoComplete="tel" placeholder="090 123 4567" value={phone} onChange={(event) => setPhone(event.target.value)} aria-invalid={Boolean(errors.phone)} />{errors.phone && <small className="field-error">{errors.phone}</small>}</div>
 
             <div className="method-row"><span>Phương thức xác thực</span><div className="method-switch" role="tablist"><button type="button" className={method === 'password' ? 'selected' : ''} role="tab" aria-selected={method === 'password'} onClick={() => setMethod('password')}>Mật khẩu</button><button type="button" className={method === 'otp' ? 'selected' : ''} role="tab" aria-selected={method === 'otp'} onClick={() => setMethod('otp')}>Mã OTP</button></div></div>
 
-            {method === 'password' ? <div className="field-group"><div className="label-row"><label htmlFor="password">Mật khẩu <span>*</span></label>{!isRegister && <button type="button" className="forgot-button" onClick={() => setNotice('Liên kết đặt lại mật khẩu sẽ được gửi qua SMS.')}>Quên mật khẩu?</button>}</div><div className="password-input"><input id="password" name="password" type={showPassword ? 'text' : 'password'} autoComplete={isRegister ? 'new-password' : 'current-password'} placeholder="Nhập mật khẩu" aria-invalid={Boolean(errors.password)} /><button type="button" aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'} onClick={() => setShowPassword(!showPassword)}><EyeIcon closed={showPassword} /></button></div>{errors.password && <small className="field-error">{errors.password}</small>}</div> : <div className="field-group"><label htmlFor="otp">Mã OTP <span>*</span></label><div className="otp-row"><input id="otp" name="otp" type="text" inputMode="numeric" autoComplete="one-time-code" maxLength={6} placeholder="000 000" aria-invalid={Boolean(errors.otp)} /><button type="button" className="send-otp" onClick={() => setNotice('Mã OTP mẫu đã được gửi đến số điện thoại của bạn.')}>Gửi mã</button></div>{errors.otp && <small className="field-error">{errors.otp}</small>}</div>}
+            {method === 'password' ? (
+              <div className="field-group">
+                <div className="label-row">
+                  <label htmlFor="password">Mật khẩu <span>*</span></label>
+                  {!isRegister && <button type="button" className="forgot-button" onClick={() => setNotice('Liên kết đặt lại mật khẩu sẽ được gửi qua SMS.')}>Quên mật khẩu?</button>}
+                </div>
+                <div className="password-input">
+                  <input id="password" name="password" type={showPassword ? 'text' : 'password'} autoComplete={isRegister ? 'new-password' : 'current-password'} placeholder="Nhập mật khẩu" value={password} onChange={(event) => setPassword(event.target.value)} aria-invalid={Boolean(errors.password)} />
+                  <button type="button" aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'} onClick={() => setShowPassword(!showPassword)}><EyeIcon closed={showPassword} /></button>
+                </div>
+                {errors.password && <small className="field-error">{errors.password}</small>}
+              </div>
+            ) : (
+              <div className="field-group">
+                <label htmlFor="otp">Mã OTP <span>*</span></label>
+                <div className="otp-row">
+                  <input id="otp" name="otp" type="text" inputMode="numeric" autoComplete="one-time-code" maxLength={6} placeholder="000 000" aria-invalid={Boolean(errors.otp)} />
+                  <button type="button" className="send-otp" onClick={() => setNotice('Mã OTP mẫu đã được gửi đến số điện thoại của bạn.')}>Gửi mã</button>
+                </div>
+                {errors.otp && <small className="field-error">{errors.otp}</small>}
+              </div>
+            )}
 
             <label className="consent-row"><input type="checkbox" name="consent" required={isRegister} /><span>Tôi đồng ý với <a href="#terms">điều khoản sử dụng</a> và chính sách bảo mật.</span></label>
             <button className="auth-submit" type="submit" disabled={submitted}>{submitted ? 'Đang xử lý...' : isRegister ? 'Tạo tài khoản' : 'Đăng nhập'}<span aria-hidden="true">→</span></button>
