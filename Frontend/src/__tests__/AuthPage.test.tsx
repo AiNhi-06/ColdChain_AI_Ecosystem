@@ -27,11 +27,10 @@ describe('AuthPage', () => {
     expect(screen.getByText('Nhập số điện thoại gồm 10 chữ số.')).toBeInTheDocument();
   });
 
-  it('redirects a driver to the driver dashboard after login', () => {
+  it('redirects to the sender dashboard after login', () => {
     vi.useFakeTimers();
-    render(<MemoryRouter initialEntries={['/login']}><Routes><Route path="/login" element={<AuthPage />} /><Route path="/driver" element={<h1>Trang chủ Người vận chuyển</h1>} /></Routes></MemoryRouter>);
+    render(<MemoryRouter initialEntries={['/login']}><Routes><Route path="/login" element={<AuthPage />} /><Route path="/sender" element={<h1>Trang chủ Người gửi hàng</h1>} /></Routes></MemoryRouter>);
 
-    fireEvent.change(screen.getByLabelText('Vai trò đăng nhập *'), { target: { value: 'driver' } });
     fireEvent.change(screen.getByLabelText('Số điện thoại *'), { target: { value: '0901234567' } });
     fireEvent.change(screen.getByLabelText('Mật khẩu *'), { target: { value: 'secret1' } });
     fireEvent.click(screen.getByRole('button', { name: /Đăng nhập/ }));
@@ -39,6 +38,6 @@ describe('AuthPage', () => {
       vi.advanceTimersByTime(700);
     });
 
-    expect(screen.getByRole('heading', { name: 'Trang chủ Người vận chuyển' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Trang chủ Người gửi hàng' })).toBeInTheDocument();
   });
 });

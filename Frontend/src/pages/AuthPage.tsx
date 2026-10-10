@@ -1,6 +1,5 @@
 import { FormEvent, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { roleLabels, rolePaths, UserRole } from '../types/roles';
 
 type AuthMode = 'login' | 'register';
 type AuthMethod = 'password' | 'otp';
@@ -8,12 +7,6 @@ type AuthMethod = 'password' | 'otp';
 type AuthPageProps = {
   initialMode?: AuthMode;
 };
-
-const demoAccounts: Array<{ role: UserRole; name: string; phone: string; password: string }> = [
-  { role: 'sender', name: 'Người gửi hàng', phone: '0901234567', password: 'Sender@123' },
-  { role: 'driver', name: 'Người vận chuyển', phone: '0902345678', password: 'Driver@123' },
-  { role: 'enterprise', name: 'Doanh nghiệp', phone: '0903456789', password: 'Enterprise@123' },
-];
 
 function Mark() {
   return (
@@ -41,10 +34,7 @@ function AuthPage({ initialMode = 'login' }: AuthPageProps) {
   const location = useLocation();
   const [mode, setMode] = useState<AuthMode>(initialMode);
   const [method, setMethod] = useState<AuthMethod>('password');
-  const [selectedRole, setSelectedRole] = useState<UserRole>('sender');
   const [showPassword, setShowPassword] = useState(false);
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [notice, setNotice] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -78,16 +68,8 @@ function AuthPage({ initialMode = 'login' }: AuthPageProps) {
     window.setTimeout(() => {
       setSubmitted(false);
       setNotice(mode === 'login' ? 'Đăng nhập thành công. Đang mở trang chủ...' : 'Tài khoản đã được tạo thành công.');
-      if (mode === 'login') navigate(rolePaths[selectedRole]);
+      if (mode === 'login') navigate('/sender');
     }, 650);
-  };
-
-  const useDemoAccount = (account: (typeof demoAccounts)[number]) => {
-    setSelectedRole(account.role);
-    setPhone(account.phone);
-    setPassword(account.password);
-    setNotice(`Đã điền tài khoản mẫu ${account.name}.`);
-    setErrors({});
   };
 
   const isRegister = mode === 'register';
@@ -118,32 +100,10 @@ function AuthPage({ initialMode = 'login' }: AuthPageProps) {
             <button className={isRegister ? 'selected' : ''} type="button" role="tab" aria-selected={isRegister} onClick={() => switchMode('register')}>Đăng ký</button>
           </div>
 
-          {!isRegister && <section className="demo-accounts" aria-labelledby="demo-accounts-title">
-            <div className="demo-accounts-heading">
-              <span id="demo-accounts-title">Tài khoản mẫu</span>
-              <small>Bấm để điền nhanh thông tin đăng nhập</small>
-            </div>
-            <div className="demo-account-list">
-              {demoAccounts.map((account) => (
-                <button
-                  className={`demo-account ${selectedRole === account.role ? 'selected' : ''}`}
-                  type="button"
-                  key={account.role}
-                  onClick={() => useDemoAccount(account)}
-                >
-                  <strong>{account.name}</strong>
-                  <span>{account.phone}</span>
-                  <small>Mật khẩu: {account.password}</small>
-                </button>
-              ))}
-            </div>
-          </section>}
-
           <form className="auth-form" onSubmit={handleSubmit} noValidate>
             {isRegister && <div className="field-group"><label htmlFor="fullName">Họ và tên <span>*</span></label><input id="fullName" name="fullName" type="text" autoComplete="name" placeholder="Ví dụ: Nguyễn Văn Minh" aria-invalid={Boolean(errors.fullName)} />{errors.fullName && <small className="field-error">{errors.fullName}</small>}</div>}
             {isRegister && <div className="field-group"><label htmlFor="senderType">Bạn là <span>*</span></label><select id="senderType" name="senderType" defaultValue="owner"><option value="owner">Chủ vựa</option><option value="collector">Điểm thu gom</option><option value="trader">Thương lái</option></select></div>}
-            {!isRegister && <div className="field-group"><label htmlFor="role">Vai trò đăng nhập <span>*</span></label><select id="role" name="role" value={selectedRole} onChange={(event) => setSelectedRole(event.target.value as UserRole)}><option value="sender">{roleLabels.sender}</option><option value="driver">{roleLabels.driver}</option><option value="enterprise">{roleLabels.enterprise}</option></select></div>}
-            <div className="field-group"><label htmlFor="phone">Số điện thoại <span>*</span></label><input id="phone" name="phone" type="tel" inputMode="numeric" autoComplete="tel" placeholder="090 123 4567" value={phone} onChange={(event) => setPhone(event.target.value)} aria-invalid={Boolean(errors.phone)} />{errors.phone && <small className="field-error">{errors.phone}</small>}</div>
+            <div className="field-group"><label htmlFor="phone">Số điện thoại <span>*</span></label><input id="phone" name="phone" type="tel" inputMode="numeric" autoComplete="tel" placeholder="090 123 4567" aria-invalid={Boolean(errors.phone)} />{errors.phone && <small className="field-error">{errors.phone}</small>}</div>
 
             <div className="method-row"><span>Phương thức xác thực</span><div className="method-switch" role="tablist"><button type="button" className={method === 'password' ? 'selected' : ''} role="tab" aria-selected={method === 'password'} onClick={() => setMethod('password')}>Mật khẩu</button><button type="button" className={method === 'otp' ? 'selected' : ''} role="tab" aria-selected={method === 'otp'} onClick={() => setMethod('otp')}>Mã OTP</button></div></div>
 
@@ -154,7 +114,7 @@ function AuthPage({ initialMode = 'login' }: AuthPageProps) {
                   {!isRegister && <button type="button" className="forgot-button" onClick={() => setNotice('Liên kết đặt lại mật khẩu sẽ được gửi qua SMS.')}>Quên mật khẩu?</button>}
                 </div>
                 <div className="password-input">
-                  <input id="password" name="password" type={showPassword ? 'text' : 'password'} autoComplete={isRegister ? 'new-password' : 'current-password'} placeholder="Nhập mật khẩu" value={password} onChange={(event) => setPassword(event.target.value)} aria-invalid={Boolean(errors.password)} />
+                  <input id="password" name="password" type={showPassword ? 'text' : 'password'} autoComplete={isRegister ? 'new-password' : 'current-password'} placeholder="Nhập mật khẩu" aria-invalid={Boolean(errors.password)} />
                   <button type="button" aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'} onClick={() => setShowPassword(!showPassword)}><EyeIcon closed={showPassword} /></button>
                 </div>
                 {errors.password && <small className="field-error">{errors.password}</small>}
